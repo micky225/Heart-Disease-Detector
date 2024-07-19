@@ -3,6 +3,7 @@ from .models import HeartParameter
 from .serializers import HeartSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.contrib import messages
 from rest_framework import status
 import numpy as np
 import pickle
@@ -51,4 +52,9 @@ class HeartApiViewDetails(APIView):
     def delete(self, request, pk, format=None):
         heart_parameter = HeartParameter.objects.get(pk=pk)
         heart_parameter.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(
+             {
+                "message": "Deleted successfully!"
+             },
+            status=status.HTTP_204_NO_CONTENT
+            )
