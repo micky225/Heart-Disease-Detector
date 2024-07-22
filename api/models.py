@@ -71,6 +71,7 @@ class HeartParameter(models.Model):
         choices=THALLIUM_STRESS_TEST_RESULTS,
         default=0
         )
+    prediction_result = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(verbose_name='date_added', null=True, blank=True, auto_now_add=True)
 
     def __str__(self):

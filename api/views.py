@@ -34,12 +34,9 @@ class HeartApiView(APIView):
             prediction = prediction[0].item()
 
             result = 'Your heart is fine, you do not have heart disease' if prediction == 0 else 'Unfortunately, you have heart disease'
-            serializer.save()
+            serializer.save(prediction_result=result)
 
-            return Response({
-                'status': result,
-                'details': serializer.data
-            })
+            return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
