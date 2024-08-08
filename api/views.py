@@ -24,20 +24,33 @@ class HeartApiView(APIView):
         if serializer.is_valid():
             data = serializer.validated_data
             features = np.array([[
-                data['age'], data['sex'], data['chest_pain_type'], data['resting_blood_pressure'],
-                data['serum_colesterol'], data['fasting_blood_sugar_level'], data['resting_electrocardiographoc_results'],
-                data['maximum_heart_rate'], data['exercise_induced_agina'], data['st_depression'],
-                data['slope'], data['number_of_major_vessels'], data['thallium_stress_test_results']
+                data['age'], data['sex'], data['resting_blood_pressure'],
+                data['serum_cholesterol'], data['fasting_blood_sugar_level'], data['maximum_heart_rate']
             ]])
 
             prediction = classifier.predict(features)
             prediction = prediction[0].item()
 
-            result = 'Your heart is fine, you do not have heart disease' if prediction == 0 else 'Unfortunately, you have heart disease'
-            serializer.save(prediction_result=result)
+            if prediction == 0:
+                result = 'Your heart is fine, you do not have heart disease'
+            else:
+                result = 'Unfortunately, you have heart disease'
+                causes = self.analyze_causes(data)
+                result += '\n\nPossible contributing factors:\n ' + ', '.join(causes)
 
+            serializer.save(prediction_result=result)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def analyze_causes(self, data):
+        causes = []
+        if data['resting_blood_pressure'] > 130:
+            causes.append('High resting blood pressure')
+        if data['serum_cholesterol'] > 200:
+            causes.append('High serum cholesterol')
+        if data['fasting_blood_sugar_level'] == 1:
+            causes.append('High fasting blood sugar level')
+        return causes
 
 
 class HeartApiViewDetails(APIView):
