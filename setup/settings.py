@@ -84,6 +84,18 @@ DATABASES = {
     }
 }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'heart_disease_detector',
+        'USER': 'heart_disease_detector_user',
+        'PASSWORD': 'dCQKefnXmfwwaocJ1VZVhFYCt7pLPObx',
+        'HOST': 'dpg-cqqkm9ogph6c738d2clg-a',
+        'PORT': 5432,
+    }
+}
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

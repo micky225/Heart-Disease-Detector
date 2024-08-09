@@ -50,6 +50,8 @@ class HeartApiView(APIView):
             causes.append('High serum cholesterol')
         if data['fasting_blood_sugar_level'] == 1:
             causes.append('High fasting blood sugar level')
+        if data['maximum_heart_rate'] < 120:
+            causes.append('Minimum heart rate')    
         return causes
 
 
