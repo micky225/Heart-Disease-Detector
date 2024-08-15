@@ -13,8 +13,7 @@ data.replace('?', np.nan, inplace=True)
 data.dropna(inplace=True)
 
 
-features = ["age", "sex", "trestbps", "chol", "fbs", "thalach"]
-X = data[features]
+X = data.drop("target", axis=1)
 y = data["target"].apply(lambda x: 1 if x > 0 else 0) 
 
 
