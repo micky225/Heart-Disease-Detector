@@ -1,29 +1,29 @@
-import numpy as np
-import pandas as pd
-from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
-import pickle
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import train_test_split
+import pandas as pd
 
+# Load your dataset (this assumes you have a CSV file)
+df = pd.read_csv('heart.csv')
 
-url = "https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/processed.cleveland.data"
-column_names = ["age", "sex", "cp", "trestbps", "chol", "fbs", "restecg", "thalach", "exang", "oldpeak", "slope", "ca", "thal", "target"]
-data = pd.read_csv(url, names=column_names)
+# Select the 13 relevant features
+X = df[['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']]
+y = df['target']  # Target variable (heart disease or not)
 
-data.replace('?', np.nan, inplace=True)
-data.dropna(inplace=True)
-
-
-X = data.drop("target", axis=1)
-y = data["target"].apply(lambda x: 1 if x > 0 else 0) 
-
-
-
+# Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+# Create a pipeline with a scaler and SVC model
+pipeline = Pipeline([
+    ('scaler', StandardScaler()),
+    ('svc', SVC(C=10, gamma='auto'))
+])
 
-model = SVC(probability=True)
-model.fit(X_train, y_train)
+# Train the model
+pipeline.fit(X_train, y_train)
 
-
-with open("svc.pkl", "wb") as file:
-    pickle.dump(model, file)
+# Save the trained model to a pickle file
+import pickle
+with open('svm_13_features.pkl', 'wb') as f:
+    pickle.dump(pipeline, f)

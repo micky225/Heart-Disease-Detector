@@ -9,7 +9,7 @@ import pickle
 import pandas as pd
 
 
-with open('svc.pkl', 'rb') as file:
+with open('svm_13_features.pkl', 'rb') as file:
     classifier = pickle.load(file)
 
 
@@ -50,7 +50,7 @@ class HeartApiView(APIView):
 
     def analyze_causes(self, data):
         causes = []
-        if data['resting_blood_pressure'] > 130:
+        if data['resting_blood_pressure'] >= 130:
             causes.append('High resting blood pressure')
         if data['serum_cholesterol'] > 370:
             causes.append('High serum cholesterol')
@@ -78,3 +78,4 @@ class HeartApiViewDetails(APIView):
              },
             status=status.HTTP_204_NO_CONTENT
             )
+ 
