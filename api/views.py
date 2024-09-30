@@ -41,8 +41,8 @@ class HeartApiView(APIView):
                 result = 'Your heart is fine, you do not have heart disease'
             else:
                 result = 'Unfortunately, you have heart disease'
-                causes = self.analyze_causes(data)
-                result += '\n\nPossible contributing factors:\n ' + ', '.join(causes)
+                # causes = self.analyze_causes(data)
+                # result += '\n\nPossible contributing factors:\n ' + ', '.join(causes)
 
             serializer.save(prediction_result=result)
             return Response(serializer.data)
